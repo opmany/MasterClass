@@ -28,9 +28,9 @@ router.post(
       const { email, password, full_name } = req.body;
       const hash = await bcrypt.hash(password, 12);
       const { rows } = await pool.query(
-        `INSERT INTO users (email, password, full_name)
+        `INSERT INTO users (email, password_hash, username)
          VALUES ($1, $2, $3)
-         RETURNING id, email, full_name, role, created_at`,
+         RETURNING id, email, username, role, created_at`,
         [email, hash, full_name || null]
       );
       const user = rows[0];
@@ -53,7 +53,7 @@ router.post(
     try {
       const { email, password } = req.body;
       const { rows } = await pool.query(
-        "SELECT id, email, full_name, role, password FROM users WHERE email = $1",
+        "SELECT id, email, username, role, password_hash FROM users WHERE email = $1",
         [email]
       );
       const user = rows[0];
@@ -83,9 +83,9 @@ router.patch(
     try {
       const { full_name } = req.body;
       const { rows } = await pool.query(
-        `UPDATE users SET full_name = COALESCE($1, full_name), updated_at = NOW()
+        `UPDATE users SET username = COALESCE($1, username), updated_at = NOW()
          WHERE id = $2
-         RETURNING id, email, full_name, role`,
+         RETURNING id, email, username, role`,
         [full_name, req.user.id]
       );
       res.json(rows[0]);
