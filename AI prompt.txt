@@ -1,0 +1,105 @@
+I already created a site that helps you learn English.
+It has a frontend, a backend, and a database, i want you to recreate the site from scratch with the same features, but better looking, and written better.
+The site has a user system, with students, teachers and moderators (me and another friend). there are a few pages to the site.
+the site has a navbar, which helps the users navigate.
+Every user can be both a student and a teacher.
+you can become a teacher of a class by registering a new class, which gives you privilege to change the exams and words within it.
+as a student, you can register to a few classes, and each class can have a few exam, and each exam can have many words.
+as a teacher, you can share a link to the site, which lets your students join the class (with your approval).
+this is how the database looks like:
+
+----------------------------
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+TABLE users {
+    id SERIAL [primary key]
+    username VARCHAR(50) [not null]
+    password_hash TEXT [not null]
+    email VARCHAR(100)
+    is_admin BOOLEAN
+    created_at TIMESTAMP
+    role VARCHAR(10)
+}
+
+TABLE classes {
+    id SERIAL [primary key]
+    name TEXT [not null]
+    teacher_id INTEGER
+    created_at TIMESTAMP
+}
+
+TABLE class_memberships {
+    user_id INTEGER [primary key]
+    class_id INTEGER [primary key]
+    role VARCHAR(10)
+}
+
+TABLE exams {
+    id SERIAL [primary key]
+    name TEXT [not null]
+    class_id integer
+    is_default BOOLEAN
+}
+
+TABLE words {
+    id SERIAL [primary key]
+    exam_id INTEGER
+    word TEXT [not null]
+    meaning TEXT
+    translation TEXT
+}
+
+
+Ref words: words.exam_id > exams.id
+
+Ref: exams.class_id < classes.id
+
+Ref: class_memberships.user_id < users.id
+Ref: class_memberships.class_id < classes.id
+
+Ref: classes.teacher_id < users.id
+------------------------------------
+
+i want to be able in the code to set a specific user (or a few, by id) to become modderators, and have access to all classes, and elts them change everything they want.
+
+The main page, which lets you navigate to all "games".
+a "game" is a playable area in the site that helps the students train (and learn) the words from the exam the teacher set.
+
+there are 3 types of minigames currently.
+1 - matching game
+in this game there are x amount of words and y amount of translations (i want to choose the amount in the code). at the end show the user how many answers he answered correctly, how many he failed, and which he failed (what the word was, what the user chose, and what was the correct answer.
+
+2 - flash cards
+self explenetory
+
+3 - Multiple choice quiz
+also self explenetory
+
+let the user end any game early by clicking a button.
+
+If you are a teacher to any class you have a page of an exam editor that lets you change the word meaning and the translation (to Hebrew) of each word in the exam.
+
+find a good way for users to select which class and exam they are currently preparing for (selected exam). also i want the students to be able to see their class, with a list of the students by name, and the teacher.
+
+there should be a page for showcasing the words in the exam, and an account settings page for deleting the account, changing the password, or deleting the user (add more things if you see fit).
+
+you may add more things, and make the site better, but please do not remove anything from what I've said here
+
+I want you to make both the frontend and the backend of the site (the db is already built)
+
+
+
+
+A few mistakes and problems, that may be my fault for not disclosing.
+In the matching game, it should continue with the words, until the user clicks on the end game, or finishes the words. more-over, currently i want the words to be 5 words, while there are 3 meanings, so there would be 2 random distruction words.
+in the create new exam i would like for it to have an option to parse an excel file (it is already a feature in the site), just add a button and a ui for parsing, after the user drags the excel and parses, the site gets all the words, meanings and translations, and then it lets the user change any word as they see fit, if it parses incorrectly or if they spot a mistake, and at the end, there is a confirm button that sets the exam as the parsed excel file.
+also make the admins see all the classes and be able to edit them. right now as my admin account it doesn't show the existing classes and exams
+
+
+
+
+perfect. now i want to copy the frontend code, and the backend code. i dont have premium, can you please make me a list of all the files i should copy and to where, and how to set up the server to run the site on my own.
+
+
+
